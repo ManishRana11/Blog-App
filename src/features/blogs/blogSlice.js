@@ -1,0 +1,32 @@
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = [];
+
+const blogSlice = createSlice({
+  name: 'blogs',
+  initialState,
+  reducers: {
+    addBlog: (state, action) => {
+      state.push(action.payload);
+    },
+    editBlog: (state, action) => {
+      const { id, title, content, date } = action.payload;
+      const existingBlog = state.find(blog => blog.id === id);
+      if(existingBlog) {
+        existingBlog.title = title;
+        existingBlog.content = content;
+        existingBlog.date = date;
+      }
+    },
+    deleteBlog: (state, action) => {
+      const { id } = action.payload;
+      const existingBlog = state.find(blog => blog.id === id);
+      if(existingBlog) {
+        return state.filter(blog => blog.id !== id);
+      }
+    }
+  }
+});
+
+export const { addBlog, editBlog, deleteBlog } = blogSlice.actions;
+export default blogSlice.reducer;
